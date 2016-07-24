@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Fetch My Fare</title>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+   <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+    <style>
+      html {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        height: 100%;
+        margin: 0;
+        background-image:url("fetchmyfare.jpg");
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-position: left;
+        padding-left: 600px;
+      }
+      #map {
+        height: 600px;
+        width: 600px;
+      }
+      .controls {
+        margin-top: 10px;
+        border: 1px solid transparent;
+        border-radius: 2px 0 0 2px;
+        box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        height: 32px;
+        outline: none;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+      }
+
+      .controls1 {
+        margin-top: 10px;
+        border: 1px solid transparent;
+        border-radius: 2px 0 0 2px;
+        box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        height: 32px;
+        width: 600px;
+        background: rgba(54, 25, 25, .5);
+        background: rgb(54, 25, 25)
+        outline: none;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+      }
+
+      .controls2 {
+        margin-top: 10px;
+        border: 1px solid transparent;
+        border-radius: 2px 0 0 2px;
+        box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        height: 32px;
+        width: 600px;
+        font-family: Futura;
+        font-size: 15px;
+        font-weight: 300;
+        outline: none;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+      }
+
+      #origin-input,
+      #destination-input {
+        background-color: #fff;
+        font-family: Roboto;
+        font-size: 15px;
+        font-weight: 300;
+        margin-left: 12px;
+        padding: 0 11px 0 13px;
+        text-overflow: ellipsis;
+        width: 200px;
+      }
+
+      #origin-input:focus,
+      #destination-input:focus {
+        border-color: #4d90fe;
+      }
+
+      #mode-selector {
+        color: #fff;
+        background-color: #4d90fe;
+        margin-left: 12px;
+        padding: 5px 11px 0px 11px;
+      }
+
+      #mode-selector label {
+        font-family: Roboto;
+        font-size: 13px;
+        font-weight: 300;
+      }
+
+    </style>
+  </head>
+  <body>
+    <!-- This line is necessary to support $location HTML5 mode (for query string parameters). -->
+    <base href="/">
+    <input id="origin-input" class="controls" type="text"
+        placeholder="Enter an origin location">
+
+    <input id="destination-input" class="controls" type="text"
+        placeholder="Enter a destination location">
+
+    <div id="mode-selector" class="controls" style="visibility: hidden;">
+      <input type="radio" name="type" id="changemode-driving" checked="checked">
+      <label for="changemode-driving">Driving</label>
+    </div>
+    <div id="map" class="controls"></div>
+    <div id="submit-form" class="controls1">
+    	<form action="/comparePrices" method="POST">
+    		<input id="source_address_lat" name="source_address_lat" type="hidden"></input>
+    		<input id="source_address_lng" name="source_address_lng" type="hidden"></input>
+	    	<input id="destination_address_lat" name="destination_address_lat" type="hidden"></input>
+	    	<input id="destination_address_lng" name="destination_address_lng" type="hidden"></input>
+    		<input id="source_address_name" name="source_address_name" type="hidden"></input>
+	    	<input id="destination_address_name" name="destination_address_name" type="hidden"></input>
+    		<input name="compare" id="compare" value="Compare Fares" type="submit" style="width:600px;height:32px;"/>
+    	</form>
+    </div>
+    <div ng-app="myApp" ng-controller="myCtrl">
+    <style>
+    .color0 {
+        background-color: lightblue;
+        font-family: Futura;
+        font-size: 15px;
+        font-weight: 300;
+    }
+
+    .color1 {
+        background-color: lightyellow;
+        font-family: Futura;
+        font-size: 15px;
+        font-weight: 300;
+    }
+    .color2 {
+        background-color: lightyellow;
+        font-family: Futura;
+        font-size: 15px;
+        font-weight: 300;
+    }
+    </style>
+    <div ng-switch on="src_address_name" class="controls2"> 
+         <span ng-switch-default>From: {{ src_address_name }}</span>
+    </div>
+    <div ng-switch on="dst_address_name" class="controls2"> 
+         <span ng-switch-default>To: {{ dst_address_name }}</span>
+    </div>
+ 	<table border="0" cellpadding="4">
+ 	    <tbody ng-repeat="price in realprices">
+ 	    <tr ng-class="color2">
+ 	    	<th>Service Provider</th>
+ 	    	<th>Estimated Time</th>
+ 	    	<th>Distance</th>
+ 	    	<th>Estimated Price</th>
+ 	    	<th>Payment Currency</th>
+ 	    	<th>Action</th>
+ 	    </tr>
+ 		<tr ng-repeat="x in price track by $index" ng-class="'color' + ($index % 2)">
+			<td>{{x.display_name }}</td>
+			<td>{{x.duration }}</td>
+			<td>{{x.distance }}</td>
+			<td>{{x.estimate }}</td>
+			<td>{{x.currency_code }}</td>
+			<td><input type="submit" value="Book"/></td>
+		</tr>
+		</tbody>
+   </table>
+    <script>
+      // This example requires the Places library. Include the libraries=places
+      // parameter when you first load the API. For example:
+      // <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
+      var source_address_lat       = document.getElementById('source_address_lat');
+      var source_address_lng       = document.getElementById('source_address_lng');
+      var source_address_name      = document.getElementById('source_address_name');
+      var destination_address_lat  = document.getElementById('destination_address_lat');
+      var destination_address_lng  = document.getElementById('destination_address_lng');
+      var destination_address_name = document.getElementById('destination_address_name'); 
+           
+      function initMap() {
+        var origin_place_id = null;
+        var destination_place_id = null;
+        var travel_mode = google.maps.TravelMode.WALKING;
+        var map = new google.maps.Map(document.getElementById('map'), {
+          mapTypeControl: false,
+          center: {lat: -33.8688, lng: 151.2195},
+          zoom: 13
+        });
+        var directionsService = new google.maps.DirectionsService;
+        var directionsDisplay = new google.maps.DirectionsRenderer;
+        directionsDisplay.setMap(map);
+
+        var origin_input = document.getElementById('origin-input');
+        var destination_input = document.getElementById('destination-input');
+        var modes = document.getElementById('mode-selector');
+
+        map.controls[google.maps.ControlPosition.TOP_LEFT].push(origin_input);
+        map.controls[google.maps.ControlPosition.TOP_LEFT].push(destination_input);
+        map.controls[google.maps.ControlPosition.TOP_LEFT].push(modes);
+
+        var origin_autocomplete = new google.maps.places.Autocomplete(origin_input);
+        origin_autocomplete.bindTo('bounds', map);
+        var destination_autocomplete =
+            new google.maps.places.Autocomplete(destination_input);
+        destination_autocomplete.bindTo('bounds', map);
+
+        // Sets a listener on a radio button to change the filter type on Places
+        // Autocomplete.
+        function setupClickListener(id, mode) {
+          var radioButton = document.getElementById(id);
+          radioButton.addEventListener('click', function() {
+            travel_mode = mode;
+          });
+        }
+        setupClickListener('changemode-driving', google.maps.TravelMode.DRIVING);
+
+        function expandViewportToFitPlace(map, place) {
+          if (place.geometry.viewport) {
+            map.fitBounds(place.geometry.viewport);
+          } else {
+            map.setCenter(place.geometry.location);
+            map.setZoom(17);
+          }
+        }
+
+        origin_autocomplete.addListener('place_changed', function() {
+          var place = origin_autocomplete.getPlace();
+          if (!place.geometry) {
+            window.alert("Autocomplete's returned place contains no geometry");
+            return;
+          }
+          expandViewportToFitPlace(map, place);
+          source_address_lat.value  = place.geometry.location.lat();
+          source_address_lng.value  = place.geometry.location.lng();
+          source_address_name.value = place.formatted_address;
+          
+          // If the place has a geometry, store its place ID and route if we have
+          // the other place ID
+          origin_place_id = place.place_id;
+          route(origin_place_id, destination_place_id, travel_mode,
+                directionsService, directionsDisplay);
+        });
+
+        destination_autocomplete.addListener('place_changed', function() {
+          var place = destination_autocomplete.getPlace();
+          if (!place.geometry) {
+            window.alert("Autocomplete's returned place contains no geometry");
+            return;
+          }
+          expandViewportToFitPlace(map, place);
+		  destination_address_lat.value  = place.geometry.location.lat();
+		  destination_address_lng.value  = place.geometry.location.lng();
+          destination_address_name.value = place.formatted_address;
+		  
+          // If the place has a geometry, store its place ID and route if we have
+          // the other place ID
+          destination_place_id = place.place_id;
+          route(origin_place_id, destination_place_id, travel_mode,
+                directionsService, directionsDisplay);
+        });
+
+        function route(origin_place_id, destination_place_id, travel_mode,
+                       directionsService, directionsDisplay) {
+          if (!origin_place_id || !destination_place_id) {
+            return;
+          }
+          directionsService.route({
+            origin: {'placeId': origin_place_id},
+            destination: {'placeId': destination_place_id},
+            travelMode: travel_mode
+          }, function(response, status) {
+            if (status === google.maps.DirectionsStatus.OK) {
+              directionsDisplay.setDirections(response);
+            } else {
+              window.alert('Directions request failed due to ' + status);
+            }
+          });
+        }
+      }
+    </script>
+<script>
+var app = angular.module('myApp', []);
+app.config( [ '$locationProvider', function( $locationProvider ) {
+	   // In order to get the query string from the
+	   // $location object, it must be in HTML5 mode.
+	   $locationProvider.html5Mode( true );
+	}]);
+app.controller('myCtrl', ['$scope', '$location', function($scope, $location) {
+    $scope.firstName = "John";
+    $scope.realprices = JSON.parse(decodeURIComponent($location.search().data));
+    $scope.src_address_name = decodeURIComponent($location.search().source_address);
+    $scope.dst_address_name = decodeURIComponent($location.search().destination_address);
+} ] );
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCIZZ2AQtYVTH5Xixm3-_cImtk-Czz1orE&libraries=places&callback=initMap"
+ async defer></script>
+  </body>
+</html>

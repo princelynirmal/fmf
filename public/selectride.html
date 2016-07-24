@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+<body>
+<h1>Please select one of the below rides.</h1>
+<div ng-app="myApp" ng-controller="myCtrl">
+ 	<table border="1">
+ 		<tr ng-repeat="price in prices">
+			<td>{{price.display_name }}</td>
+			<td>{{price.duration }}</td>
+			<td>{{price.distance }}</td>
+			<td>{{price.estimate }}</td>
+			<td>{{price.currency_code }}</td>
+		</tr>
+   </table>
+</div>
+
+<script>
+var app = angular.module('myApp', []);
+app.controller('myCtrl', function($scope) {
+    $scope.firstName = "John"
+    $scope.message = "Here is ma message";
+	$scope.prices = [ {
+            "localized_display_name": "uberX",
+            "high_estimate": 10,
+            "minimum": 8,
+            "duration": 360,
+            "estimate": "A$8-10",
+            "distance": 1.43,
+            "display_name": "uberX",
+            "product_id": "2d1d002b-d4d0-4411-98e1-673b244878b2",
+            "low_estimate": 8,
+            "surge_multiplier": 1,
+            "currency_code": "AUD"
+        },
+        {
+	            "localized_display_name": "UberBLACK",
+	            "high_estimate": 26,
+	            "minimum": 25,
+	            "duration": 360,
+	            "estimate": "A$25-26",
+	            "distance": 1.43,
+	            "display_name": "UberBLACK",
+	            "product_id": "0eec2f54-8cab-45ba-852a-8ddeb7a65a1e",
+	            "low_estimate": 25,
+	            "surge_multiplier": 1,
+	            "currency_code": "AUD"
+	        },
+	        {
+	            "localized_display_name": "UberLUX",
+	            "high_estimate": 40,
+	            "minimum": 30,
+	            "duration": 360,
+	            "estimate": "A$34-40",
+	            "distance": 1.43,
+	            "display_name": "UberLUX",
+	            "product_id": "52bc2818-85d4-4231-be7e-86b8af2c6c2f",
+	            "low_estimate": 34,
+	            "surge_multiplier": 1,
+	            "currency_code": "AUD"
+	        },
+	        {
+	            "localized_display_name": "UberSUV",
+	            "high_estimate": 40,
+	            "minimum": 30,
+	            "duration": 360,
+	            "estimate": "A$34-40",
+	            "distance": 1.43,
+	            "display_name": "UberSUV",
+	            "product_id": "5673624e-f589-4e33-b400-f7c837a044a6",
+	            "low_estimate": 34,
+	            "surge_multiplier": 1,
+	            "currency_code": "AUD"
+	        },
+	        {
+	            "localized_display_name": "uberTAXI",
+	            "high_estimate": null,
+	            "minimum": null,
+	            "duration": 360,
+	            "estimate": "Metered",
+	            "distance": 1.43,
+	            "display_name": "uberTAXI",
+	            "product_id": "855d3e31-36e3-4553-a892-3ff74199a2f5",
+	            "low_estimate": null,
+	            "surge_multiplier": 1,
+	            "currency_code": null
+	        }]
+});
+</script>
+
+</body>
+</html>

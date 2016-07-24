@@ -1,0 +1,27 @@
+{
+  "name": "FetchMyFare",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "bower": "^1.7.9",
+    "errorhandler": "^1.4.3",
+    "express": "^3.2.6",
+    "favicon": "0.0.2",
+    "googleapis": "^9.0.0",
+    "http": "0.0.0",
+    "jade": "^1.11.0",
+    "logger": "0.0.1",
+    "method-override": "^2.3.6",
+    "middleware": "^1.0.0",
+    "morgan": "^1.7.0",
+    "node": "0.0.0",
+    "node-uber": "^0.9.6",
+    "path": "^0.12.7",
+    "pug": "^2.0.0-beta3",
+    "serve-favicon": "^2.3.0"
+  }
+}
