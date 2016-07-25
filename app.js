@@ -97,7 +97,7 @@ app.get('/uberlogin', function(req, res) {
     res.redirect(authUrl);
 });
 
-http.createServer(app).listen(app.get('port'), server_ip_address, function(){
+http.createServer(app).listen(app.get('port'), app.get('server_ip_address'), function(){
     console.log('Express server listening on port ' + app.get('port'));
 });
 
