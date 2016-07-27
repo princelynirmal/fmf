@@ -13,6 +13,7 @@ var express = require('express')
   , methodOverride = require('method-override')
   , errorHandler = require('errorhandler')
   , Uber = require('node-uber')
+  , engines = require('consolidate')
   , logger = require('morgan');
 
 var app = express();
@@ -34,6 +35,7 @@ app.use(logger('dev'));
 app.use(bodyParser());
 app.use(methodOverride());
 app.use(express.static(path.join(__dirname, 'public')));
+app.engine('/', engines.handlebars);
 
 // development only
 if ('development' === app.get('env')) {
