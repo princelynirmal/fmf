@@ -35,7 +35,7 @@ app.use(logger('dev'));
 app.use(bodyParser());
 app.use(methodOverride());
 app.use(express.static(path.join(__dirname, 'public')));
-app.engine('/', engines.handlebars);
+app.engine('*', engines.handlebars);
 
 // development only
 if ('development' === app.get('env')) {
