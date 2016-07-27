@@ -23,6 +23,7 @@
     "node-uber": "^0.9.6",
     "path": "^0.12.7",
     "pug": "^2.0.0-beta3",
+    "request": "^2.74.0",
     "serve-favicon": "^2.3.0"
   },
   "main": "server.js"
