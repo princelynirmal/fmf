@@ -91,7 +91,7 @@ app.get('/uberlogin', function(req, res) {
 		client_id: 'lMnHzWGTaP-0DQxR8UHb0thMEnnQWBTM',
 		client_secret: 'fs-JM97RVFTCACnJQxn8xPXgsGMVLXckz7aTUJJv',
 		server_token: 'tbSFeH5F2G4GDzaoi3oEfOqYMwObvG4HX3XWkFxx',
-		redirect_uri: 'http://localhost:3000/uberlogin/callback',
+		redirect_uri: 'http://myfirstdomain-fmf.rhcloud.com/uberlogin/callback',
 		name: 'FetchMyFare',
 		language:'en_US',
 		sandbox: true
