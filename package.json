@@ -27,4 +27,5 @@
     "request": "^2.74.0",
     "serve-favicon": "^2.3.0"
   },
+  "main" : "app.js"
 }
